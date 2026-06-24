@@ -51,17 +51,23 @@ import { BRAND } from '../theme';
 import SopAgreementCard from '../components/aspirant/SopAgreementCard';
 import ConstituencyPickerDialog from '../components/ConstituencyPickerDialog';
 import useAuthStore from '../store/useAuthStore';
+import { safeUrl } from '../utils/safeUrl';
 
 const FF = "'Baloo 2', sans-serif";
 // blocking handoff to native apps (Instagram, Facebook, etc.). Navigate the current
 // window instead — iOS then hands the URL off to the right app.
 const openExternal = (url: string, e?: React.MouseEvent) => {
     e?.preventDefault();
+    // C-SEC-4: never navigate to a script-capable URL (javascript:/data:/...)
+    // saved by an aspirant. safeUrl returns the URL unchanged when safe, or
+    // null when dangerous — in which case we simply do nothing.
+    const safe = safeUrl(url);
+    if (!safe) return;
     const isStandalone =
         window.matchMedia?.('(display-mode: standalone)').matches ||
         (navigator as any).standalone === true;
-    if (isStandalone) window.location.href = url;
-    else window.open(url, '_blank', 'noopener,noreferrer');
+    if (isStandalone) window.location.href = safe;
+    else window.open(safe, '_blank', 'noopener,noreferrer');
 };
 
 const StarRating: React.FC<{ value: number; total?: number }> = ({ value, total = 5 }) => {
@@ -684,7 +690,7 @@ const AspirantViewDetailsPage: React.FC = () => {
                                 <Grid item xs={6} sm={3}>
                                     <Box
                                         component="a"
-                                        href={aspirant.instagramLink}
+                                        href={safeUrl(aspirant.instagramLink) ?? undefined}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         onClick={(e) => openExternal(aspirant.instagramLink!, e)}
@@ -712,7 +718,7 @@ const AspirantViewDetailsPage: React.FC = () => {
                                 <Grid item xs={6} sm={3}>
                                     <Box
                                         component="a"
-                                        href={aspirant.facebookLink}
+                                        href={safeUrl(aspirant.facebookLink) ?? undefined}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         onClick={(e) => openExternal(aspirant.facebookLink!, e)}
@@ -730,7 +736,7 @@ const AspirantViewDetailsPage: React.FC = () => {
                                 <Grid item xs={6} sm={3}>
                                     <Box
                                         component="a"
-                                        href={aspirant.linkedinLink}
+                                        href={safeUrl(aspirant.linkedinLink) ?? undefined}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         onClick={(e) => openExternal(aspirant.linkedinLink!, e)}
@@ -748,7 +754,7 @@ const AspirantViewDetailsPage: React.FC = () => {
                                 <Grid item xs={6} sm={3}>
                                     <Box
                                         component="a"
-                                        href={aspirant.twitterLink}
+                                        href={safeUrl(aspirant.twitterLink) ?? undefined}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         onClick={(e) => openExternal(aspirant.twitterLink!, e)}
