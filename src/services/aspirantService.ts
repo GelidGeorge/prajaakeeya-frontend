@@ -13,16 +13,6 @@ export interface AspirantPayload {
   address?: string;
   gender?: string;
   phone?: string;
-  identityBackground?: string;
-  resignationPledge?: string;
-  financialIntegrity?: string;
-  noHighCommand?: string;
-  technicalCompetence?: string;
-  transparency?: string;
-  emergencyProtocol?: string;
-  expertConsultation?: string;
-  voterFeedback?: string;
-  primaryRule?: string;
   meetingLink?: string | null;
   instagramLink?: string | null;
   facebookLink?: string | null;
