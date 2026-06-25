@@ -270,8 +270,8 @@ const UserLayout = () => {
                 aria-label={t('common.logout')}
                 sx={{
                   display: { xs: 'flex', sm: 'none' },
-                  color: isDark ? 'rgba(255,255,255,0.7)' : 'text.secondary',
-                  '&:hover': { color: 'error.main', bgcolor: 'rgba(200,24,10,0.06)' },
+                  color: 'text.secondary',
+                  '&:hover': { color: BRAND.red, bgcolor: `${BRAND.red}0F` },
                 }}
               >
                 <LogoutIcon fontSize="small" />
